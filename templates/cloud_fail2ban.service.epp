@@ -1,0 +1,14 @@
+[Unit]
+Description=Client for Cloud Fail2Ban
+After=network.target
+
+[Service]
+Type=simple
+User=cloudfail2ban
+WorkingDirectory=<%= $cloud_fail2ban::install::home %>
+Environment="LOGLEVEL=<%= $cloud_fail2ban::config::loglevel"
+ExecStart=<%= $cloud_fail2ban::install::home %>/env/bin/cloud_f2b_client
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

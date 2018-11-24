@@ -1,0 +1,3 @@
+[default]
+region = <%= $cloud_fail2ban::config::aws_region %>
+output = json
