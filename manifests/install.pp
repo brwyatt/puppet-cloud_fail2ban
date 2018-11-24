@@ -34,8 +34,10 @@ class cloud_fail2ban::install (
     path    => '/etc/sudoers.d/cloud_fail2ban',
     owner   => 'root',
     group   => 'root',
-    mode    => '0644',
-    content => 'cloudfail2ban ALL=(root) NOPASSWD: /usr/bin/fail2ban-client',
+    mode    => '0440',
+    content => join([
+      'cloudfail2ban ALL=(root) NOPASSWD: /usr/bin/fail2ban-client',
+      ''], "\n"),
   }
 
   $ssh_dir = "${home}/.ssh"
