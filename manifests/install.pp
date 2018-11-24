@@ -69,7 +69,7 @@ class cloud_fail2ban::install (
     mode   => '0600',
   }
 
-  file_line { 'github_host_key':
+  file_line { 'cloud_fail2ban github_host_key':
     path => $ssh_known_hosts,
     # lint:ignore:80chars lint:ignore:140chars
     line => 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==',
@@ -92,11 +92,6 @@ class cloud_fail2ban::install (
     cwd     => "${home}/cloud_fail2ban",
     user    => 'cloudfail2ban',
     require => Exec['Clone cloud_fail2ban repo'],
-  }
-
-  package { 'python3.5-venv':
-    ensure  => installed,
-    require => [Exec['apt_update'], Class['python']],
   }
 
   python::pyvenv { $venv_dir:
