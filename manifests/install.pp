@@ -106,7 +106,7 @@ class cloud_fail2ban::install (
     require => [Exec['apt_update'], Package['python3.5-venv']],
   }
 
-  exec { 'Install Catbot':
+  exec { 'Install Cloud_Fail2Ban':
     command     => "bash -c 'source ${venv_dir}/bin/activate; pip install \"${home}/cloud_fail2ban\" --upgrade'",
     cwd         => $home,
     refreshonly => true,
