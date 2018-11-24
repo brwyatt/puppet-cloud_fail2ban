@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=cloudfail2ban
 WorkingDirectory=<%= $cloud_fail2ban::install::home %>
-Environment="LOGLEVEL=<%= $cloud_fail2ban::config::loglevel %>"
+Environment="LOGLEVEL=<%= $cloud_fail2ban::config::log_level %>"
 ExecStart=<%= $cloud_fail2ban::install::home %>/env/bin/cloud_f2b_client
 Restart=on-failure
 

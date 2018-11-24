@@ -5,7 +5,7 @@
 # @example
 #   include cloud_fail2ban::config
 class cloud_fail2ban::config (
-  String $loglevel = 'INFO',
+  String $log_level = 'INFO',
   Optional[String] $aws_access_key_id = undef,
   Optional[String] $aws_secret_access_key = undef,
   String $aws_region = 'us-west-2',
