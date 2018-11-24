@@ -95,11 +95,13 @@ class cloud_fail2ban::install (
     require => Exec['Clone cloud_fail2ban repo'],
   }
 
+  $venv_version = split($python_version, '[.]')[0]
+
   python::pyvenv { $venv_dir:
     ensure  => present,
     version => $python_version,
     owner   => 'cloudfail2ban',
-    require => [Exec['apt_update'], Package["python${python_version}-venv"]],
+    require => [Exec['apt_update'], Package["python${venv_version}-venv"]],
   }
 
   exec { 'Install Cloud_Fail2Ban':
