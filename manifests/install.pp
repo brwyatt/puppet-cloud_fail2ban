@@ -9,6 +9,7 @@ class cloud_fail2ban::install (
   String $git_repo = 'https://github.com/brwyatt/Cloud-Fail2Ban.git',
   String $git_branch = 'master',
   Optional[String] $git_deploy_key = undef,
+  String $python_version = '3.5',
 ){
   include ::apt
   include ::fail2ban
@@ -96,9 +97,9 @@ class cloud_fail2ban::install (
 
   python::pyvenv { $venv_dir:
     ensure  => present,
-    version => '3.5',
+    version => $python_version,
     owner   => 'cloudfail2ban',
-    require => [Exec['apt_update'], Package['python3.5-venv']],
+    require => [Exec['apt_update'], Package["python${python_version}-venv"]],
   }
 
   exec { 'Install Cloud_Fail2Ban':
