@@ -88,7 +88,7 @@ class cloud_fail2ban::install (
   exec { 'Update cloud_fail2ban repo':
     # lint:ignore:80chars lint:ignore:140chars
     command => "bash -c 'git clean -dfx && git checkout \"${git_branch}\" && git reset --hard \"origin/${git_branch}\" && git clean -dfx'",
-    unless  => "bash -c 'git fetch && git status | grep \"On branch ${git_branch}\" && git status | grep \"Your branch is up-to-date with \"'",
+    unless  => "bash -c 'git fetch && git status | grep \"On branch ${git_branch}\" && git status | grep -e \"Your branch is up[ -]to[ -]date with \"'",
     # lint:endignore
     cwd     => "${home}/cloud_fail2ban",
     user    => 'cloudfail2ban',
