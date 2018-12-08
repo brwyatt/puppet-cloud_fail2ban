@@ -77,22 +77,14 @@ class cloud_fail2ban::install (
     # lint:endignore
   }
 
-  exec { 'Clone cloud_fail2ban repo':
-    command => "git clone '${git_repo}' cloud_fail2ban",
-    unless  => '[ -d cloud_fail2ban/.git ]',
-    cwd     => $home,
-    user    => 'cloudfail2ban',
-    require => [Class['git'], File[$ssh_known_hosts]],
-  }
-
-  exec { 'Update cloud_fail2ban repo':
-    # lint:ignore:80chars lint:ignore:140chars
-    command => "bash -c 'git clean -dfx && git checkout \"${git_branch}\" && git reset --hard \"origin/${git_branch}\" && git clean -dfx'",
-    unless  => "bash -c 'git fetch && git status | grep \"On branch ${git_branch}\" && git status | grep -e \"Your branch is up[ -]to[ -]date with \"'",
-    # lint:endignore
-    cwd     => "${home}/cloud_fail2ban",
-    user    => 'cloudfail2ban',
-    require => Exec['Clone cloud_fail2ban repo'],
+  vcsrepo { 'cloud_fail2ban':
+    ensure   => latest,
+    path     => "${home}/cloud_fail2ban",
+    provider => git,
+    owner    => 'cloudfail2ban',
+    source   => $git_repo,
+    revision => $git_branch,
+    require  => [Class['git'], File[$ssh_known_hosts]],
   }
 
   $venv_version = split($python_version, '[.]')[0]
@@ -109,8 +101,7 @@ class cloud_fail2ban::install (
     cwd         => $home,
     refreshonly => true,
     user        => 'cloudfail2ban',
-    subscribe   => [Exec['Clone cloud_fail2ban repo'], Exec['Update cloud_fail2ban repo'],
-                    Python::Pyvenv[$venv_dir]],
+    subscribe   => [Vcsrepo['cloud_fail2ban'], Python::Pyvenv[$venv_dir]],
   }
 
   Exec['apt_update'] -> Class['python']
